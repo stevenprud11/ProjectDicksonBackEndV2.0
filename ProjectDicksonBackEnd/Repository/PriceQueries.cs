@@ -7,9 +7,9 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public class PriceQueries : IPriceQueries
     {
-        private readonly ConnectionString _connString;
+        private readonly IConnectionString _connString;
 
-        public PriceQueries(ConnectionString connString)
+        public PriceQueries(IConnectionString connString)
         {
             _connString = connString;
         }

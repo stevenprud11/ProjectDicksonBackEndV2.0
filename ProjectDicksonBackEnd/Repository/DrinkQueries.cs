@@ -7,9 +7,9 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public class DrinkQueries : IDrinkQueries
     {
-        private readonly ConnectionString _connString;
+        private readonly IConnectionString _connString;
 
-        public DrinkQueries(ConnectionString connString)
+        public DrinkQueries(IConnectionString connString)
         {
             _connString = connString;
         }

@@ -7,9 +7,9 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public class BarQueries : IBarQueries
     {
-        private readonly ConnectionString _connString;
+        private readonly IConnectionString _connString;
 
-        public BarQueries(ConnectionString connString)
+        public BarQueries(IConnectionString connString)
         {
             _connString = connString;
         }
