@@ -29,6 +29,7 @@ namespace ProjectDicksonBackEnd.Repository
             return builder.ToString();
         }
 
+
         public List<Drink> GetDrinks()
         {
             using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
@@ -71,6 +72,7 @@ namespace ProjectDicksonBackEnd.Repository
             }
         }
 
+
         public List<Drink> GetDrinks(string drinkName)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
@@ -82,6 +84,50 @@ namespace ProjectDicksonBackEnd.Repository
                     $"join Bar on Bar.Id = Price.BarId "+
                     $"join Category on Category.Id = Drink.CategoryId " +
                     $"where DrinkName like '%{drinkName}%' " +
+                    $"order by DrinkName;", connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                drinks.Add(new Drink
+                                {
+                                    Id = Convert.ToString(reader[0]),
+                                    DrinkName = Convert.ToString(reader[1]),
+                                    Price = Convert.ToString(reader[2]),
+                                    BarName = Convert.ToString(reader[3]),
+                                    Category = Convert.ToString(reader[4])
+                                });
+                            }
+                        }
+
+                        connection.Close();
+                        return drinks;
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                }
+            }
+        }
+
+
+        public List<Drink> GetDrinksFrom(string barName)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            {
+                List<Drink> drinks = new List<Drink>();
+
+                using (SqlCommand command = new SqlCommand($"select Drink.Id, DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
+                    $"join Price on Price.DrinkId = Drink.Id " +
+                    $"join Bar on Bar.Id = Price.BarId " +
+                    $"join Category on Category.Id = Drink.CategoryId " +
+                    $"where BarName like '%{barName}%' " +
                     $"order by DrinkName;", connection))
                 {
                     try

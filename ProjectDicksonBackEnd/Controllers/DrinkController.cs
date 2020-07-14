@@ -38,5 +38,14 @@ namespace ProjectDicksonBackEnd.Controllers
             return drinks;
         }
 
+        [HttpGet()]
+        [Route("api/drinks_from/")]
+        public List<Drink> GetDrinksFrom([FromQuery] string barName)
+        {
+            List<Drink> drinks = _drinkQueries.GetDrinksFrom(barName);
+
+            return drinks;
+        }
+
     }
 }
