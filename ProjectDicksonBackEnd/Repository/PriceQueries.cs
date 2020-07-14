@@ -5,11 +5,11 @@ using ProjectDicksonBackEnd.Models;
 
 namespace ProjectDicksonBackEnd.Repository
 {
-    public class BarQueries : IBarQueries
+    public class PriceQueries : IPriceQueries
     {
         private readonly SqlConnectionModel _sql;
 
-        public BarQueries(SqlConnectionModel sql)
+        public PriceQueries(SqlConnectionModel sql)
         {
             _sql = sql;
         }
@@ -29,14 +29,18 @@ namespace ProjectDicksonBackEnd.Repository
             return builder.ToString();
         }
 
-
-        public List<Bar> GetBars()
+        public List<Drink> GetDrinkUnderPrice(double price)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
             {
-                List<Bar> bars = new List<Bar>();
+                List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand("Select * from Bar", connection))
+                using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
+                    $"inner join Category on Category.Id = Drink.CategoryId " +
+                    $"inner join Price on Price.DrinkId = Drink.Id " +
+                    $"inner join Bar on Bar.Id = Price.BarId " +
+                    $"where Price.Price <= {price} " +
+                    $"order by Price.Price;", connection))
                 {
                     try
                     {
@@ -46,16 +50,19 @@ namespace ProjectDicksonBackEnd.Repository
                         {
                             while (reader.Read())
                             {
-                                bars.Add(new Bar { Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
+                                drinks.Add(new Drink
+                                {
+                                    Id = Convert.ToString(reader[0]),
+                                    DrinkName = Convert.ToString(reader[1]),
+                                    Price = Convert.ToString(reader[2]),
+                                    BarName = Convert.ToString(reader[3]),
+                                    Category = Convert.ToString(reader[4])
                                 });
                             }
                         }
 
                         connection.Close();
-                        return bars;
+                        return drinks;
                     }
                     catch (Exception e)
                     {
@@ -65,13 +72,18 @@ namespace ProjectDicksonBackEnd.Repository
             }
         }
 
-        public List<Bar> GetBars(string barName)
+        public List<Drink> GetDrinkBetweenPrice(double low, double high)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
             {
-                List<Bar> bars = new List<Bar>();
+                List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand($"Select * from Bar where BarName like '%{barName}%' order by BarName", connection))
+                using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
+                    $"inner join Category on Category.Id = Drink.CategoryId " +
+                    $"inner join Price on Price.DrinkId = Drink.Id " +
+                    $"inner join Bar on Bar.Id = Price.BarId " +
+                    $"where Price.Price <= {high} and Price.Price >= {low} " +
+                    $"order by Price.Price;", connection))
                 {
                     try
                     {
@@ -81,55 +93,19 @@ namespace ProjectDicksonBackEnd.Repository
                         {
                             while (reader.Read())
                             {
-                                bars.Add(new Bar
+                                drinks.Add(new Drink
                                 {
                                     Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
+                                    DrinkName = Convert.ToString(reader[1]),
+                                    Price = Convert.ToString(reader[2]),
+                                    BarName = Convert.ToString(reader[3]),
+                                    Category = Convert.ToString(reader[4])
                                 });
                             }
                         }
 
                         connection.Close();
-                        return bars;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
-                }
-            }
-        }
-
-        public List<Bar> SearchBarLocation(string location)
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
-            {
-                List<Bar> bars = new List<Bar>();
-
-                using (SqlCommand command = new SqlCommand($"Select * from Bar where BarLocation like '%{location}%'", connection))
-                {
-                    try
-                    {
-                        connection.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                bars.Add(new Bar
-                                {
-                                    Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
-                                });
-                            }
-                        }
-
-                        connection.Close();
-                        return bars;
+                        return drinks;
                     }
                     catch (Exception e)
                     {

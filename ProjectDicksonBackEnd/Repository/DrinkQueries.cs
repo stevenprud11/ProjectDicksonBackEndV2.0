@@ -38,7 +38,8 @@ namespace ProjectDicksonBackEnd.Repository
                 using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
                     "inner join Category on Category.Id = Drink.CategoryId " +
                     "inner join Price on Price.DrinkId = Drink.Id " +
-                    "inner join Bar on Bar.Id = Price.BarId;", connection))
+                    "inner join Bar on Bar.Id = Price.BarId " +
+                    "order by Drink.Id;", connection))
                 {
                     try
                     {
@@ -80,7 +81,8 @@ namespace ProjectDicksonBackEnd.Repository
                     $"join Price on Price.DrinkId = Drink.Id "+
                     $"join Bar on Bar.Id = Price.BarId "+
                     $"join Category on Category.Id = Drink.CategoryId " +
-                    $"where DrinkName like '%{drinkName}%';", connection))
+                    $"where DrinkName like '%{drinkName}%' " +
+                    $"order by DrinkName;", connection))
                 {
                     try
                     {

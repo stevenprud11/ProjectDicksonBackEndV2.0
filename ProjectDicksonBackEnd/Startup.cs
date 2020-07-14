@@ -41,6 +41,7 @@ namespace ProjectDicksonBackEnd
 
             services.AddTransient<IBarQueries, BarQueries>();
             services.AddTransient<IDrinkQueries, DrinkQueries>();
+            services.AddTransient<IPriceQueries, PriceQueries>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,8 +30,8 @@ namespace ProjectDicksonBackEnd.Controllers
         }
 
         [HttpGet()]
-        [Route("api/drink_search/{drinkName}")]
-        public List<Drink> GetDrinks(string drinkName)
+        [Route("api/drink_search/")]
+        public List<Drink> GetDrinks([FromQuery] string drinkName)
         {
             List<Drink> drinks = _drinkQueries.GetDrinks(drinkName);
 

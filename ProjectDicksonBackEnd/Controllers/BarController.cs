@@ -32,8 +32,8 @@ namespace ProjectDicksonBackEnd.Controllers
 
         //get list of bars by name
         [HttpGet()]
-        [Route("api/bars/{barName}")]
-        public List<Bar> SearchBarName(string barName)
+        [Route("api/bar_search/")]
+        public List<Bar> SearchBarName([FromQuery] string barName)
         {
             List<Bar> bars = _barQueries.GetBars(barName);
 
@@ -42,8 +42,8 @@ namespace ProjectDicksonBackEnd.Controllers
 
         //get list of bars by location
         [HttpGet()]
-        [Route("api/bar_location/{location}")]
-        public List<Bar> SearchBarLocation(string location)
+        [Route("api/bar_location/")]
+        public List<Bar> SearchBarLocation([FromQuery] string location)
         {
             List<Bar> bars = _barQueries.SearchBarLocation(location);
 
