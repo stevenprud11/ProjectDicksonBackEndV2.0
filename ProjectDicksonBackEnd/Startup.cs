@@ -39,7 +39,8 @@ namespace ProjectDicksonBackEnd
                 .Configure<SqlConnectionModel>(Configuration.GetSection("SqlConnection"))
                 .AddTransient(cfg => cfg.GetService<IOptions<SqlConnectionModel>>().Value);
 
-            services.AddTransient<ISql, Sql>();
+            services.AddTransient<IBarQueries, BarQueries>();
+            services.AddTransient<IDrinkQueries, DrinkQueries>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

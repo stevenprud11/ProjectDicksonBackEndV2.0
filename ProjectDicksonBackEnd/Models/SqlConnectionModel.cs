@@ -9,10 +9,5 @@ namespace ProjectDicksonBackEnd.Repository
         public string Hostname { get; set; }
         public string Database { get; set; }
         public string Port { get; set; }
-
-
-        public SqlConnectionModel()
-        {
-        }
     }
 }
