@@ -5,7 +5,6 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public interface IDrinkQueries
     {
-        string ConnectionStringBuilder();
         public List<Drink> GetDrinks();
         public List<Drink> GetDrinks(string drinkName);
         public List<Drink> GetDrinksFrom(string barName);

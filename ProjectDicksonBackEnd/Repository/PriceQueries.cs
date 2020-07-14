@@ -7,31 +7,16 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public class PriceQueries : IPriceQueries
     {
-        private readonly SqlConnectionModel _sql;
+        private readonly ConnectionString _connString;
 
-        public PriceQueries(SqlConnectionModel sql)
+        public PriceQueries(ConnectionString connString)
         {
-            _sql = sql;
-        }
-
-        public string ConnectionStringBuilder()
-        {
-            string BaseConnectionString = _sql.BaseConnectionString;
-
-            var builder = new SqlConnectionStringBuilder(BaseConnectionString)
-            {
-                DataSource = _sql.Hostname,
-                InitialCatalog = _sql.Database,
-                UserID = _sql.Username,
-                Password = _sql.Password
-            };
-
-            return builder.ToString();
+            _connString = connString;
         }
 
         public List<Drink> GetDrinkUnderPrice(double price)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
             {
                 List<Drink> drinks = new List<Drink>();
 
@@ -74,7 +59,7 @@ namespace ProjectDicksonBackEnd.Repository
 
         public List<Drink> GetDrinkBetweenPrice(double low, double high)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
             {
                 List<Drink> drinks = new List<Drink>();
 

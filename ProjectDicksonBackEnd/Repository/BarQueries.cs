@@ -7,32 +7,17 @@ namespace ProjectDicksonBackEnd.Repository
 {
     public class BarQueries : IBarQueries
     {
-        private readonly SqlConnectionModel _sql;
+        private readonly ConnectionString _connString;
 
-        public BarQueries(SqlConnectionModel sql)
+        public BarQueries(ConnectionString connString)
         {
-            _sql = sql;
-        }
-
-        public string ConnectionStringBuilder()
-        {
-            string BaseConnectionString = _sql.BaseConnectionString;
-
-            var builder = new SqlConnectionStringBuilder(BaseConnectionString)
-            {
-                DataSource = _sql.Hostname,
-                InitialCatalog = _sql.Database,
-                UserID = _sql.Username,
-                Password = _sql.Password
-            };
-
-            return builder.ToString();
+            _connString = connString;
         }
 
 
         public List<Bar> GetBars()
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
             {
                 List<Bar> bars = new List<Bar>();
 
@@ -67,7 +52,7 @@ namespace ProjectDicksonBackEnd.Repository
 
         public List<Bar> GetBars(string barName)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
             {
                 List<Bar> bars = new List<Bar>();
 
@@ -104,7 +89,7 @@ namespace ProjectDicksonBackEnd.Repository
 
         public List<Bar> SearchBarLocation(string location)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStringBuilder()))
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
             {
                 List<Bar> bars = new List<Bar>();
 
