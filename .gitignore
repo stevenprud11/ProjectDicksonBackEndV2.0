@@ -11,6 +11,9 @@ autom4te.cache/
 tarballs/
 test-results/
 
+#secure files
+appsettings.secure.json
+
 # Mac bundle stuff
 *.dmg
 *.app
