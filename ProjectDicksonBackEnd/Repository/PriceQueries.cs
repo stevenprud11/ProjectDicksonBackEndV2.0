@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Microsoft.Data.SqlClient;
 using ProjectDicksonBackEnd.Models;
 
@@ -20,15 +21,17 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
-                    $"inner join Category on Category.Id = Drink.CategoryId " +
-                    $"inner join Price on Price.DrinkId = Drink.Id " +
-                    $"inner join Bar on Bar.Id = Price.BarId " +
-                    $"where Price.Price <= {price} " +
-                    $"order by Price.Price;", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[DrinkUnderPrice]";
+
+                        command.Parameters.AddWithValue("@price", price);
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -63,15 +66,18 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
-                    $"inner join Category on Category.Id = Drink.CategoryId " +
-                    $"inner join Price on Price.DrinkId = Drink.Id " +
-                    $"inner join Bar on Bar.Id = Price.BarId " +
-                    $"where Price.Price <= {high} and Price.Price >= {low} " +
-                    $"order by Price.Price;", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[DrinkBetweenPrice]";
+
+                        command.Parameters.AddWithValue("@low", low);
+                        command.Parameters.AddWithValue("@high", high);
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
