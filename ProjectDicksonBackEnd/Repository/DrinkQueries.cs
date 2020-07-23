@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Microsoft.Data.SqlClient;
 using ProjectDicksonBackEnd.Models;
 
@@ -21,14 +22,16 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand("select Drink.Id, Drink.DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
-                    "inner join Category on Category.Id = Drink.CategoryId " +
-                    "inner join Price on Price.DrinkId = Drink.Id " +
-                    "inner join Bar on Bar.Id = Price.BarId " +
-                    "order by Drink.Id;", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectDrinks]";
+
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -64,15 +67,17 @@ namespace ProjectDicksonBackEnd.Repository
             { 
                 List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand($"select Drink.Id, DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink "+
-                    $"join Price on Price.DrinkId = Drink.Id "+
-                    $"join Bar on Bar.Id = Price.BarId "+
-                    $"join Category on Category.Id = Drink.CategoryId " +
-                    $"where DrinkName like '%{drinkName}%' " +
-                    $"order by DrinkName;", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectDrinkName]";
+                        command.Parameters.AddWithValue("@name", drinkName);
+
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -108,15 +113,17 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Drink> drinks = new List<Drink>();
 
-                using (SqlCommand command = new SqlCommand($"select Drink.Id, DrinkName, Price.Price, Bar.BarName, Category.CategoryName from Drink " +
-                    $"join Price on Price.DrinkId = Drink.Id " +
-                    $"join Bar on Bar.Id = Price.BarId " +
-                    $"join Category on Category.Id = Drink.CategoryId " +
-                    $"where BarName like '%{barName}%' " +
-                    $"order by DrinkName;", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectDrinkFrom]";
+                        command.Parameters.AddWithValue("@name", barName);
+
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
