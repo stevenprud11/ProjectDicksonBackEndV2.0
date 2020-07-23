@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  projectdicksonbackend:
+    image: ${DOCKER_REGISTRY-}projectdicksonbackend
+    build:
+      context: .
+      dockerfile: ProjectDicksonBackEnd/Dockerfile
+    ports:
+    - "5000:80"

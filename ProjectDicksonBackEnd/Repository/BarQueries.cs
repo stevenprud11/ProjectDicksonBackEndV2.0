@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
+using Microsoft.Data.SqlClient;
 using ProjectDicksonBackEnd.Models;
 
 namespace ProjectDicksonBackEnd.Repository
@@ -21,10 +22,15 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand("Select * from Bar", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectBars]";
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -56,10 +62,17 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand($"Select * from Bar where BarName like '%{barName}%' order by BarName", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectBarName]";
+
+                        command.Parameters.AddWithValue("@name", barName);
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -93,10 +106,17 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand($"Select * from Bar where BarLocation like '%{location}%'", connection))
+                using (SqlCommand command = new SqlCommand())
                 {
                     try
                     {
+                        command.Connection = connection;
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "[dbo].[SelectBarLocation]";
+
+                        command.Parameters.AddWithValue("@location", location);
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
