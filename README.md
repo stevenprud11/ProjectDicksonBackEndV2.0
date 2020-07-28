@@ -1,17 +1,24 @@
 Project Dickson Back End Documentation
 
+
 Project Dickson V2.0 is a web application with a goal of providing drink data on Dickson St. to college students before they go out. This is the backend
 implementation that was developed by utilizing a .NET Core Web API Framework and deploying to a Docker Container hosted in AWS ECS. The data is fake data
 as I continue to implement the project, feel free to test the APIs yourself. Any feedback is greatly appriciated and I can be reached at stevenprud11@gmail.com. 
 
+
 API Endpoints
+
 Base URL
+
 http://ec2-18-191-178-149.us-east-2.compute.amazonaws.com/
 
 API Health Check
+
 curl --location --request GET 'http://ec2-18-191-178-149.us-east-2.compute.amazonaws.com/api/about’
 
+
 Bar API Endpoints
+
 Bar List
 curl --location --request GET 'http://ec2-18-191-178-149.us-east-2.compute.amazonaws.com/api/bars’
 • 200 – OK
