@@ -1,18 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+
 using ProjectDicksonBackEnd.Repository;
-//using ProjectDicksonBackEnd.Models;
 
 namespace ProjectDicksonBackEnd
 {
@@ -21,8 +16,8 @@ namespace ProjectDicksonBackEnd
         public Startup(IConfiguration configuration)
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.secure.json", optional: true);
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.secure.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -43,6 +38,7 @@ namespace ProjectDicksonBackEnd
             services.AddTransient<IDrinkQueries, DrinkQueries>();
             services.AddTransient<IPriceQueries, PriceQueries>();
             services.AddTransient<IConnectionString, ConnectionString>();
+            services.AddTransient<ISpecialQueries, SpecialQueries>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +49,7 @@ namespace ProjectDicksonBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
