@@ -16,8 +16,8 @@ namespace ProjectDicksonBackEnd
         public Startup(IConfiguration configuration)
         {
             var builder = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.secure.json", optional: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.secure.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -49,7 +49,7 @@ namespace ProjectDicksonBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
