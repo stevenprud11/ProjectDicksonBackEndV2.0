@@ -7,4 +7,4 @@ services:
       context: .
       dockerfile: ProjectDicksonBackEnd/Dockerfile
     ports:
-    - "5000:443"
+    - "5000:80"

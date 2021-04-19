@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 
 
 using ProjectDicksonBackEnd.Repository;
+using ProjectDicksonBackEnd.Services;
 
 namespace ProjectDicksonBackEnd
 {
@@ -39,6 +40,7 @@ namespace ProjectDicksonBackEnd
             services.AddTransient<IPriceQueries, PriceQueries>();
             services.AddTransient<IConnectionString, ConnectionString>();
             services.AddTransient<ISpecialQueries, SpecialQueries>();
+            services.AddTransient<ISpecialsService, SpecialsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +51,7 @@ namespace ProjectDicksonBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
