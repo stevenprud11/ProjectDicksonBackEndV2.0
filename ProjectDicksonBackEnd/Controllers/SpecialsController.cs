@@ -4,25 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectDicksonBackEnd.Models;
-using ProjectDicksonBackEnd.Repository;
+using ProjectDicksonBackEnd.Services;
 
 namespace ProjectDicksonBackEnd.Controllers
 {
     [Produces("application/json")]
     public class SpecialsController
     {
-        private readonly ISpecialQueries _specialQueries;
+        private readonly ISpecialsService _specialsService;
 
-        public SpecialsController(ISpecialQueries specialQueries)
+        public SpecialsController(ISpecialsService specialsService)
         {
-            _specialQueries = specialQueries;
+            _specialsService = specialsService;
         }
 
         [HttpGet()]
         [Route("api/specials")]
         public List<Special> GetSpecials()
         {
-            List<Special> specials = _specialQueries.GetSpecials();
+            List<Special> specials = _specialsService.GetList();
 
             return specials;
         }
