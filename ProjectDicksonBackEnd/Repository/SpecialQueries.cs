@@ -42,8 +42,9 @@ namespace ProjectDicksonBackEnd.Repository
                                     Id = Convert.ToString(reader[0]),
                                     Day = Convert.ToString(reader[1]),
                                     BarName = Convert.ToString(reader[2]),
-                                    CategoryName = Convert.ToString(reader[3]),
-                                    Price = Convert.ToString(reader[4]),
+                                    DrinkName = Convert.ToString(reader[3]),
+                                    CategoryName = Convert.ToString(reader[4]),
+                                    Price = Convert.ToString(reader[5])
                                 }); ;
                             }
                         }

@@ -3,12 +3,13 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ProjectDicksonBackEnd.Models
 {
-    public class Special : IComparable<Special>
+    public class Special
     {
         public string Id { get; set; }
         public string Day { get; set; }
         public string BarName { get; set; }
         public string CategoryName { get; set; }
+        public string DrinkName { get; set; }
         public string Price { get; set; }
         public int DayofWeek { get; set; }
 
@@ -16,7 +17,6 @@ namespace ProjectDicksonBackEnd.Models
         public void setDayOfWeekOrder()
         {
             int currentDay = (int)DateTime.Now.DayOfWeek;
-            currentDay += 1;
             int day = 0;
             switch (Day)
             {
@@ -30,12 +30,6 @@ namespace ProjectDicksonBackEnd.Models
             }
 
             DayofWeek = (day - currentDay + 7) % 7;
-            //Console.WriteLine(DayofWeek);
-        }
-
-        public int CompareTo(Special other)
-        {
-            return DayofWeek.CompareTo(other.DayofWeek);
         }
     }
 }

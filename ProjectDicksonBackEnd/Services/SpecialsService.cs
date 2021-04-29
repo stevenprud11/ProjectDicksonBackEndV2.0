@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ProjectDicksonBackEnd.Models;
 using ProjectDicksonBackEnd.Repository;
+using System.Linq;
 
 namespace ProjectDicksonBackEnd.Services
 {
@@ -17,20 +18,13 @@ namespace ProjectDicksonBackEnd.Services
         public List<Special> GetList()
         {
             List<Special> list = _specialsQueries.GetSpecials();
-            return OrderByCurrentDay(list);
-
-            
-        }
-
-
-
-        public List<Special> OrderByCurrentDay(List<Special> list)
-        {
             foreach (Special s in list)
                 s.setDayOfWeekOrder();
-            list.Sort();
 
-            return list;
+            List<Special> sorted = list.OrderBy(x => x.DayofWeek).ThenBy(x => x.BarName).ThenBy(x => x.Price).ToList();
+
+            return sorted;
+            
         }
     }
 }
