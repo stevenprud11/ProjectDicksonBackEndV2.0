@@ -9,6 +9,7 @@ using ProjectDicksonBackEnd.Services;
 namespace ProjectDicksonBackEnd.Controllers
 {
     [Produces("application/json")]
+    [Route("api/specials")]
     public class SpecialsController
     {
         private readonly ISpecialsService _specialsService;
@@ -19,10 +20,18 @@ namespace ProjectDicksonBackEnd.Controllers
         }
 
         [HttpGet()]
-        [Route("api/specials")]
         public List<Special> GetSpecials()
         {
             List<Special> specials = _specialsService.GetList();
+
+            return specials;
+        }
+
+        [HttpGet("{barname}")]
+        public List<Special> GetSpecialsByBar(string barname)
+        {
+            Console.WriteLine($"{barname}");
+            List<Special> specials = _specialsService.GetListByBar(barname);
 
             return specials;
         }

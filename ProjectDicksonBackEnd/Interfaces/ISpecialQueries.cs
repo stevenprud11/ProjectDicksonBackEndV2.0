@@ -6,5 +6,6 @@ namespace ProjectDicksonBackEnd.Repository
     public interface ISpecialQueries
     {
         List<Special> GetSpecials();
+        List<Special> GetSpecialsByBar(string barname);
     }
 }

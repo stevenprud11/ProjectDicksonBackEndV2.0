@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using ProjectDicksonBackEnd.Models;
+using Dapper;
+using System.Linq;
 
 namespace ProjectDicksonBackEnd.Repository
 {
@@ -21,42 +23,48 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Special> specials = new List<Special>();
 
-                using (SqlCommand command = new SqlCommand())
+                Console.WriteLine("Executing GetSpecials");
+
+                try
                 {
-                    try
-                    {
-                        command.Connection = connection;
-
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "[dbo].[GetSpecials]";
-
-
-                        connection.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                specials.Add(new Special
-                                {
-                                    Id = Convert.ToString(reader[0]),
-                                    Day = Convert.ToString(reader[1]),
-                                    BarName = Convert.ToString(reader[2]),
-                                    DrinkName = Convert.ToString(reader[3]),
-                                    CategoryName = Convert.ToString(reader[4]),
-                                    Price = Convert.ToString(reader[5])
-                                }); ;
-                            }
-                        }
-
-                        connection.Close();
-                        return specials;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
+                    specials = connection.Query<Special>("[dbo].[GetSpecials]",  commandType: CommandType.StoredProcedure).ToList();
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error getting list of specials");
+                    throw e;
+                }
+
+                Console.WriteLine("Returning list of specials");
+                return specials;
+            }
+        }
+
+        public List<Special> GetSpecialsByBar(string barname)
+        {
+            using (SqlConnection connection = new SqlConnection(_connString.ConnectionStringBuilder()))
+            {
+                List<Special> specials = new List<Special>();
+                var parameters = new DynamicParameters();
+                parameters.Add("@barname", barname, dbType: DbType.String);
+
+                Console.WriteLine($"Executing GetSpecialsByBar for {barname}");
+
+                try
+                {
+                    specials = connection.Query<Special>("[dbo].[GetSpecialsByBar]", parameters,  commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Error getting list of specials by bar");
+                    throw e;
+                }
+                if (specials.Count == 0)
+                    Console.WriteLine($"No specials for Bar {barname}");
+
+                Console.WriteLine($"Returning list of specials for bar {barname}");
+
+                return specials;
             }
         }
     }

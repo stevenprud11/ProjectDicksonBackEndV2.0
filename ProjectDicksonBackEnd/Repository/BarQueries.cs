@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using ProjectDicksonBackEnd.Models;
+using Dapper;
+using System.Linq;
 
 namespace ProjectDicksonBackEnd.Repository
 {
@@ -22,37 +24,21 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand())
+                Console.WriteLine($"Executing GetBars");
+
+                try
                 {
-                    try
-                    {
-                        command.Connection = connection;
-
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "[dbo].[SelectBars]";
-
-                        connection.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                bars.Add(new Bar { Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
-                                });
-                            }
-                        }
-
-                        connection.Close();
-                        return bars;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
+                    bars = connection.Query<Bar>("[dbo].[SelectBars]", commandType: CommandType.StoredProcedure).ToList();
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error getting list of Bars");
+                    throw e;
+                }
+
+                Console.WriteLine($"Returning list of Bars");
+
+                return bars.OrderBy(x => x.BarName).ToList();
             }
         }
 
@@ -62,41 +48,23 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand())
+                var parameters = new DynamicParameters();
+                parameters.Add("@name", barName, dbType: DbType.String);
+
+                Console.WriteLine($"Executing GetBars by {barName}");
+
+                try
                 {
-                    try
-                    {
-                        command.Connection = connection;
-
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "[dbo].[SelectBarName]";
-
-                        command.Parameters.AddWithValue("@name", barName);
-
-                        connection.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                bars.Add(new Bar
-                                {
-                                    Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
-                                });
-                            }
-                        }
-
-                        connection.Close();
-                        return bars;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
+                    bars = connection.Query<Bar>("[dbo].[SelectBarName]", parameters, commandType: CommandType.StoredProcedure).ToList();
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error getting list of Bars by {barName}");
+                    throw e;
+                }
+
+                return bars;
+
             }
         }
 
@@ -106,41 +74,23 @@ namespace ProjectDicksonBackEnd.Repository
             {
                 List<Bar> bars = new List<Bar>();
 
-                using (SqlCommand command = new SqlCommand())
+                var parameters = new DynamicParameters();
+                parameters.Add("@location", location, dbType: DbType.String);
+
+                Console.WriteLine($"Executing GetBars by location: {location}");
+
+                try
                 {
-                    try
-                    {
-                        command.Connection = connection;
-
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "[dbo].[SelectBarLocation]";
-
-                        command.Parameters.AddWithValue("@location", location);
-
-                        connection.Open();
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                bars.Add(new Bar
-                                {
-                                    Id = Convert.ToString(reader[0]),
-                                    Name = (string)reader[1],
-                                    Location = (string)reader[2],
-                                    Phone = (string)reader[3]
-                                });
-                            }
-                        }
-
-                        connection.Close();
-                        return bars;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
-                    }
+                    bars = connection.Query<Bar>("[dbo].[SelectBarLocation]", parameters, commandType: CommandType.StoredProcedure).ToList();
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error getting list of Bars by location: {location}");
+                    throw e;
+                }
+
+                return bars;
+
             }
         }
     }

@@ -6,5 +6,6 @@ namespace ProjectDicksonBackEnd.Services
     public interface ISpecialsService
     {
         List<Special> GetList();
+        List<Special> GetListByBar(string barname);
     }
 }

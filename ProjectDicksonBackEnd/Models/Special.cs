@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using TimeZoneConverter;
+
 
 namespace ProjectDicksonBackEnd.Models
 {
@@ -16,8 +18,11 @@ namespace ProjectDicksonBackEnd.Models
 
         public void setDayOfWeekOrder()
         {
-            int currentDay = (int)DateTime.Now.DayOfWeek;
+            DateTime now = DateTime.UtcNow.AddHours(-8);
+            int currentDay = (int)now.DayOfWeek;
+
             int day = 0;
+
             switch (Day)
             {
                 case "Sunday": day = 0; break;

@@ -26,5 +26,16 @@ namespace ProjectDicksonBackEnd.Services
             return sorted;
             
         }
+
+        public List<Special> GetListByBar(string barname)
+        {
+            List<Special> list = _specialsQueries.GetSpecialsByBar(barname);
+            foreach (Special s in list)
+                s.setDayOfWeekOrder();
+
+            List<Special> sorted = list.OrderBy(x => x.DayofWeek).ThenBy(x => x.Price).ToList();
+
+            return sorted;
+        }
     }
 }
